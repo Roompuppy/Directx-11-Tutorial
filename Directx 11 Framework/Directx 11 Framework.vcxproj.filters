@@ -15,6 +15,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlignedAllocationPolicy.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="inputclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="systemclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="d3dclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="graphicsclass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -27,16 +47,5 @@
     <ClCompile Include="systemclass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="graphicsclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inputclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="systemclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
