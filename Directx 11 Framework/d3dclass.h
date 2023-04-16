@@ -10,6 +10,7 @@
 /////////////
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 
 //////////////
 // INCLUDES //
@@ -22,6 +23,7 @@
 #include "AlignedAllocationPolicy.h"
 
 using namespace DirectX;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: D3DClass
@@ -60,7 +62,6 @@ private:
 	ID3D11DepthStencilState* m_depthStencilState;
 	ID3D11DepthStencilView* m_depthStencilView;
 	ID3D11RasterizerState* m_rasterState;
-
 	XMMATRIX m_projectionMatrix;
 	XMMATRIX m_worldMatrix;
 	XMMATRIX m_orthoMatrix;
