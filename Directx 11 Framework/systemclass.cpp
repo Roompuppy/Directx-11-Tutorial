@@ -131,6 +131,10 @@ bool SystemClass::Frame()
 {
 	bool result;
 
+	if (m_Input->IsKeyDown(VK_NUMPAD0))
+	{
+		m_Graphics->SetType('R');
+	}
 
 	// Check if the user pressed escape and wants to exit the application.
 	if(m_Input->IsKeyDown(VK_ESCAPE))

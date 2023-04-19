@@ -37,6 +37,8 @@ public:
 	void Shutdown();
 	bool Frame();
 
+	void SetType(char type);
+
 private:
 	bool Render();
 
@@ -45,6 +47,8 @@ private:
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
 	ColorShaderClass* m_ColorShader;
+
+	char m_type;
 };
 
 #endif

@@ -139,15 +139,21 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
+void GraphicsClass::SetType(char type)
+{
+	m_type = type;
+}
+
 
 bool GraphicsClass::Render()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
 
-
-	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	if(m_type == 'R')
+		m_D3D->BeginScene(1.0f, 0.0f, 0.0f, 1.0f);
+	else
+		m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
