@@ -8,6 +8,7 @@ ModelClass::ModelClass()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
+	m_vertex = 0;
 }
 
 
@@ -146,6 +147,9 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
+	m_vertex = new VertexType[m_vertexCount];
+	m_vertex = vertices;
+
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
 	delete [] vertices;
 	vertices = 0;
@@ -173,6 +177,9 @@ void ModelClass::ShutdownBuffers()
 		m_vertexBuffer = 0;
 	}
 
+	delete[] m_vertex;
+	m_vertex= 0;
+
 	return;
 }
 
@@ -182,6 +189,44 @@ void ModelClass::ShutdownBuffers()
 // and etc using the IASetPrimitiveTopology DirectX function.
 void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	D3D11_SUBRESOURCE_DATA vertexData;
+	ID3D11Device* device;
+	VertexType* vertices;
+
+	vertices = new VertexType[m_vertexCount];
+
+	m_vertexBuffer->GetDesc(&vertexBufferDesc);
+
+	XMMATRIX g_RotationMatrix;
+	float g_RotationAngle = 0.01f;
+
+	g_RotationMatrix = XMMatrixRotationX(g_RotationAngle);
+
+	for (int i = 0; i < m_vertexCount; i++)
+	{
+		XMVECTOR rotatedVector = XMVector3Transform(XMLoadFloat3(&m_vertex[i].position), g_RotationMatrix);
+		XMStoreFloat3(&m_vertex[i].position, rotatedVector);
+		vertices[i] = m_vertex[i];
+	}
+
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = 0;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	vertexData.pSysMem = vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	deviceContext->GetDevice(&device);
+	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+
+	delete[] vertices;
+	vertices = 0;
+
 	unsigned int stride;
 	unsigned int offset;
 

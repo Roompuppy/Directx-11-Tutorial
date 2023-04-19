@@ -37,7 +37,8 @@ public:
 	void Shutdown();
 	bool Frame();
 
-	void SetType(char type);
+	template<typename T>
+	void SetType(T type);
 
 private:
 	bool Render();

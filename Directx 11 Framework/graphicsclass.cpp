@@ -139,9 +139,22 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
+template<typename T>
+void GraphicsClass::SetType(T type)
+{
+
+}
+
+template<>
 void GraphicsClass::SetType(char type)
 {
 	m_type = type;
+}
+
+template<>
+void GraphicsClass::SetType(bool type)
+{
+	m_D3D->SetType(type);
 }
 
 
@@ -152,6 +165,10 @@ bool GraphicsClass::Render()
 
 	if(m_type == 'R')
 		m_D3D->BeginScene(1.0f, 0.0f, 0.0f, 1.0f);
+	else if (m_type == 'G')
+		m_D3D->BeginScene(0.0f, 1.0f, 0.0f, 1.0f);
+	else if (m_type == 'B')
+		m_D3D->BeginScene(0.0f, 0.0f, 1.0f, 1.0f);
 	else
 		m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
