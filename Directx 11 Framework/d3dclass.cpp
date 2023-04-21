@@ -14,7 +14,6 @@ D3DClass::D3DClass()
 	m_depthStencilState = 0;
 	m_depthStencilView = 0;
 	m_rasterState = 0;
-	m_solidType = true;
 }
 
 
@@ -322,8 +321,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 
 	// Now set the rasterizer state.
 	m_deviceContext->RSSetState(m_rasterState);
-
-
+	
 	// Setup the viewport for rendering.
     viewport.Width = (float)screenWidth;
     viewport.Height = (float)screenHeight;
@@ -414,20 +412,8 @@ void D3DClass::Shutdown()
 
 void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 {
-	HRESULT result;
-	D3D11_RASTERIZER_DESC rasterDesc;
-
-	m_rasterState->GetDesc(&rasterDesc);
-
-	if(m_solidType)
-		rasterDesc.FillMode = D3D11_FILL_SOLID;
-	else
-		rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
-
-	m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
-	m_deviceContext->RSSetState(m_rasterState);
-
 	float color[4];
+
 
 	// Setup the color to clear the buffer to.
 	color[0] = red;
@@ -501,9 +487,4 @@ void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
 	return;
-}
-
-void D3DClass::SetType(bool type)
-{
-	m_solidType = type;
 }

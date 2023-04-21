@@ -11,7 +11,7 @@
 #include "d3dclass.h"
 #include "cameraclass.h"
 #include "modelclass.h"
-#include "colorshaderclass.h"
+#include "textureshaderclass.h"
 
 
 /////////////
@@ -37,19 +37,14 @@ public:
 	void Shutdown();
 	bool Frame();
 
-	template<typename T>
-	void SetType(T type);
-
 private:
-	bool Render();
+	bool Render(float);
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
-	ColorShaderClass* m_ColorShader;
-
-	char m_type;
+	TextureShaderClass* m_TextureShader;
 };
 
 #endif

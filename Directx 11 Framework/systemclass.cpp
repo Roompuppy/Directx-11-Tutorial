@@ -130,34 +130,7 @@ void SystemClass::Run()
 bool SystemClass::Frame()
 {
 	bool result;
-	
-	// Set color
-	if (m_Input->IsKeyDown(VK_NUMPAD0))
-	{
-		m_Graphics->SetType('R');
-	}
-	else if (m_Input->IsKeyDown(VK_NUMPAD1))
-	{
-		m_Graphics->SetType('G');
-	}
-	else if (m_Input->IsKeyDown(VK_NUMPAD2))
-	{
-		m_Graphics->SetType('B');
-	}
-	else if (m_Input->IsKeyDown(VK_SPACE))
-	{
-		m_Graphics->SetType('D');
-	}
 
-	// Set fillmode
-	if (m_Input->IsKeyDown(VK_F1))
-	{
-		m_Graphics->SetType(true);
-	}
-	else if (m_Input->IsKeyDown(VK_F2))
-	{
-		m_Graphics->SetType(false);
-	}
 
 	// Check if the user pressed escape and wants to exit the application.
 	if(m_Input->IsKeyDown(VK_ESCAPE))
