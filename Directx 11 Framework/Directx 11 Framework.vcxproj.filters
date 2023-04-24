@@ -73,5 +73,27 @@
     <None Include="data\color.vs">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="data\texture.ps">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="data\texture.vs">
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="data\cube.obj">
+      <Filter>리소스 파일</Filter>
+    </Object>
+    <Object Include="data\chair.obj">
+      <Filter>리소스 파일</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\seafloor.dds">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="data\chair_d.dds">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

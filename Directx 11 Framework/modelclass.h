@@ -79,7 +79,9 @@ private:
 	int m_vertexCount, m_indexCount, m_textureCount, m_normalCount, m_faceCount;
 	TextureClass* m_Texture;
 
-	ModelType* m_model;
+	ModelType* m_model1;
+	ModelType* m_model2;
+	ModelType* m_model3;
 };
 
 #endif

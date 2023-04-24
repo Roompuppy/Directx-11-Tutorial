@@ -41,6 +41,16 @@
   <ItemGroup>
     <None Include="data\color.ps" />
     <None Include="data\color.vs" />
+    <None Include="data\texture.ps" />
+    <None Include="data\texture.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="data\chair.obj" />
+    <Object Include="data\cube.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\chair_d.dds" />
+    <Image Include="data\seafloor.dds" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

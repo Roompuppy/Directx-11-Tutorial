@@ -9,7 +9,9 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
-	m_model = 0;
+	m_model1 = 0;
+	m_model2 = 0;
+	m_model3 = 0;
 
 	m_textureCount = 0;
 	m_normalCount = 0;
@@ -118,12 +120,21 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	// Load the vertex array and index array with data.
 	for (i = 0; i < m_vertexCount; i++)
 	{
-		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
-		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
-		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
+		vertices[i].position = XMFLOAT3(m_model1[i].x, m_model1[i].y, m_model1[i].z);
+		vertices[i].texture = XMFLOAT2(m_model1[i].tu, m_model1[i].tv);
+		vertices[i].normal = XMFLOAT3(m_model1[i].nx, m_model1[i].ny, m_model1[i].nz);
 
 		indices[i] = i;
 	}
+
+	//for (i = 0; i < m_vertexCount; i++)
+	//{
+	//	vertices[i].position = XMFLOAT3(m_model1[i].x, m_model1[i].y, m_model1[i].z);
+	//	vertices[i].texture = XMFLOAT2(m_model1[i].tu, m_model1[i].tv);
+	//	vertices[i].normal = XMFLOAT3(m_model1[i].nx, m_model1[i].ny, m_model1[i].nz);
+
+	//	indices[i] = i;
+	//}
 
 	// Set up the description of the static vertex buffer.
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -264,10 +275,20 @@ bool ModelClass::LoadModel(const WCHAR* filename)
 
 void ModelClass::ReleaseModel()
 {
-	if (m_model)
+	if (m_model1)
 	{
-		delete[] m_model;
-		m_model = 0;
+		delete[] m_model1;
+		m_model1 = 0;
+	}
+	if (m_model2)
+	{
+		delete[] m_model2;
+		m_model2 = 0;
+	}
+	if (m_model3)
+	{
+		delete[] m_model3;
+		m_model3 = 0;
 	}
 
 	return;
@@ -462,8 +483,8 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 	m_indexCount = m_vertexCount;
 
 	// Create the model using the vertex count that was read in.
-	m_model = new ModelType[m_vertexCount];
-	if (!m_model)
+	m_model1 = new ModelType[m_vertexCount];
+	if (!m_model1)
 	{
 		return false;
 	}
@@ -478,16 +499,16 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 		//	<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 		//	<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
 
-		m_model[i * 3].x = vertices[vIndex].x;
-		m_model[i * 3].y = vertices[vIndex].y;
-		m_model[i * 3].z = vertices[vIndex].z;
+		m_model1[i * 3].x = vertices[vIndex].x;
+		m_model1[i * 3].y = vertices[vIndex].y;
+		m_model1[i * 3].z = vertices[vIndex].z;
 
-		m_model[i * 3].tu = texcoords[tIndex].x;
-		m_model[i * 3].tv = texcoords[tIndex].y;
+		m_model1[i * 3].tu = texcoords[tIndex].x;
+		m_model1[i * 3].tv = texcoords[tIndex].y;
 
-		m_model[i * 3].nx = normals[nIndex].x;
-		m_model[i * 3].ny = normals[nIndex].y;
-		m_model[i * 3].nz = normals[nIndex].z;
+		m_model1[i * 3].nx = normals[nIndex].x;
+		m_model1[i * 3].ny = normals[nIndex].y;
+		m_model1[i * 3].nz = normals[nIndex].z;
 
 		vIndex = faces[i].vIndex2 - 1;
 		tIndex = faces[i].tIndex2 - 1;
@@ -496,16 +517,16 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 		//	<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 		//	<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
 
-		m_model[i * 3 + 1].x = vertices[vIndex].x;
-		m_model[i * 3 + 1].y = vertices[vIndex].y;
-		m_model[i * 3 + 1].z = vertices[vIndex].z;
+		m_model1[i * 3 + 1].x = vertices[vIndex].x;
+		m_model1[i * 3 + 1].y = vertices[vIndex].y;
+		m_model1[i * 3 + 1].z = vertices[vIndex].z;
 
-		m_model[i * 3 + 1].tu = texcoords[tIndex].x;
-		m_model[i * 3 + 1].tv = texcoords[tIndex].y;
+		m_model1[i * 3 + 1].tu = texcoords[tIndex].x;
+		m_model1[i * 3 + 1].tv = texcoords[tIndex].y;
 
-		m_model[i * 3 + 1].nx = normals[nIndex].x;
-		m_model[i * 3 + 1].ny = normals[nIndex].y;
-		m_model[i * 3 + 1].nz = normals[nIndex].z;
+		m_model1[i * 3 + 1].nx = normals[nIndex].x;
+		m_model1[i * 3 + 1].ny = normals[nIndex].y;
+		m_model1[i * 3 + 1].nz = normals[nIndex].z;
 
 		vIndex = faces[i].vIndex3 - 1;
 		tIndex = faces[i].tIndex3 - 1;
@@ -514,16 +535,16 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 		//	<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 		//	<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
 
-		m_model[i * 3 + 2].x = vertices[vIndex].x;
-		m_model[i * 3 + 2].y = vertices[vIndex].y;
-		m_model[i * 3 + 2].z = vertices[vIndex].z;
+		m_model1[i * 3 + 2].x = vertices[vIndex].x;
+		m_model1[i * 3 + 2].y = vertices[vIndex].y;
+		m_model1[i * 3 + 2].z = vertices[vIndex].z;
 
-		m_model[i * 3 + 2].tu = texcoords[tIndex].x;
-		m_model[i * 3 + 2].tv = texcoords[tIndex].y;
+		m_model1[i * 3 + 2].tu = texcoords[tIndex].x;
+		m_model1[i * 3 + 2].tv = texcoords[tIndex].y;
 
-		m_model[i * 3 + 2].nx = normals[nIndex].x;
-		m_model[i * 3 + 2].ny = normals[nIndex].y;
-		m_model[i * 3 + 2].nz = normals[nIndex].z;
+		m_model1[i * 3 + 2].nx = normals[nIndex].x;
+		m_model1[i * 3 + 2].ny = normals[nIndex].y;
+		m_model1[i * 3 + 2].nz = normals[nIndex].z;
 	}
 
 	//// Close the output file.
