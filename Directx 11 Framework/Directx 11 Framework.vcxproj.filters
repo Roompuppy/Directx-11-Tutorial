@@ -15,28 +15,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlignedAllocationPolicy.h">
+    <ClInclude Include="textureshaderclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cameraclass.h">
+    <ClInclude Include="textureclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="colorshaderclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="graphicsclass.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="inputclass.h">
+    <ClInclude Include="systemclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="modelclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="systemclass.h">
+    <ClInclude Include="inputclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshaderclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignedAllocationPolicy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,6 +57,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="d3dclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="graphicsclass.cpp">
@@ -65,6 +77,12 @@
     <ClCompile Include="systemclass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="textureshaderclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\color.ps">
@@ -79,21 +97,5 @@
     <None Include="data\texture.vs">
       <Filter>리소스 파일</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="data\cube.obj">
-      <Filter>리소스 파일</Filter>
-    </Object>
-    <Object Include="data\chair.obj">
-      <Filter>리소스 파일</Filter>
-    </Object>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="data\seafloor.dds">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="data\chair_d.dds">
-      <Filter>리소스 파일</Filter>
-    </Image>
   </ItemGroup>
 </Project>

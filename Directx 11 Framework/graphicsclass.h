@@ -37,13 +37,18 @@ public:
 	void Shutdown();
 	bool Frame();
 
+	void SetType(int type) { m_TextureShader->SetType(type); }
+
 private:
 	bool Render(float);
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
+	ModelClass* m_Model1;
+	ModelClass* m_Model2;
+	ModelClass* m_Model3;
+	ModelClass* m_ground;
 	TextureShaderClass* m_TextureShader;
 };
 
