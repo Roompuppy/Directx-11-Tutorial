@@ -11,6 +11,7 @@ GraphicsClass::GraphicsClass()
 	m_Model1 = 0;
 	m_Model2 = 0;
 	m_Model3 = 0;
+	m_Model4 = 0;
 	m_ground = 0;
 	m_TextureShader = 0;
 }

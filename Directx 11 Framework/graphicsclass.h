@@ -48,7 +48,9 @@ private:
 	ModelClass* m_Model1;
 	ModelClass* m_Model2;
 	ModelClass* m_Model3;
+	ModelClass* m_Model4;
 	ModelClass* m_ground;
+
 	TextureShaderClass* m_TextureShader;
 };
 
