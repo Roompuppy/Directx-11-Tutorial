@@ -9,13 +9,11 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
-
 	m_model = 0;
 
 	m_textureCount = 0;
 	m_normalCount = 0;
 	m_faceCount = 0;
-
 }
 
 
@@ -225,14 +223,17 @@ bool ModelClass::LoadTexture(ID3D11Device* device, const WCHAR* filename)
 {
 	bool result;
 
+
+	// Create the texture object.
 	m_Texture = new TextureClass;
-	if (!m_Texture)
+	if(!m_Texture)
 	{
 		return false;
 	}
 
+	// Initialize the texture object.
 	result = m_Texture->Initialize(device, filename);
-	if (!result)
+	if(!result)
 	{
 		return false;
 	}
@@ -329,7 +330,7 @@ bool ModelClass::ReadFileCounts(const WCHAR* filename)
 
 bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int textureCount, int normalCount, int faceCount)
 {
-	XMFLOAT3 *vertices, *texcoords, *normals;
+	XMFLOAT3* vertices, * texcoords, * normals;
 	FaceType* faces;
 	ifstream fin;
 	int vertexIndex, texcoordIndex, normalIndex, faceIndex, vIndex, tIndex, nIndex;
@@ -455,19 +456,19 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 	//fout << "Data:" << endl;
 	//fout << endl;
 
-	int pre_vertexCount = m_vertexCount;
 	m_vertexCount = faceCount * 3;
 
 	// Set the number of indices to be the same as the vertex count.
-	int pre_indexCount = m_indexCount;
-	m_indexCount = faceCount * 3;
+	m_indexCount = m_vertexCount;
 
+	// Create the model using the vertex count that was read in.
 	m_model = new ModelType[m_vertexCount];
 	if (!m_model)
 	{
 		return false;
 	}
 
+	// Now loop through all the faces and output the three vertices for each face.
 	for (int i = 0; i < faceIndex; i++)
 	{
 		vIndex = faces[i].vIndex1 - 1;
@@ -524,7 +525,6 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 		m_model[i * 3 + 2].ny = normals[nIndex].y;
 		m_model[i * 3 + 2].nz = normals[nIndex].z;
 	}
-
 
 	//// Close the output file.
 	//fout.close();

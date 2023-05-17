@@ -11,7 +11,6 @@ TextureShaderClass::TextureShaderClass()
 	m_layout = 0;
 	m_matrixBuffer = 0;
 	m_sampleState = 0;
-	m_type = 0;
 }
 
 
@@ -202,11 +201,9 @@ bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd,
 	// 1.0f. Anything outside of that wraps around and is placed between 0.0f and 1.0f. All other 
 	// settings for the sampler state description are defaults.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	//samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-	//samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.MipLODBias = 0.0f;
     samplerDesc.MaxAnisotropy = 1;
     samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -353,33 +350,6 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 
 void TextureShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-	ID3D11Device* device;
-	D3D11_SAMPLER_DESC samplerDesc;
-	deviceContext->GetDevice(&device);
-
-	m_sampleState->GetDesc(&samplerDesc);
-
-	if (m_type == 3)
-	{
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-	}
-	else if (m_type == 4)
-	{
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	}
-	else if (m_type == 5)
-	{
-		samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	}
-	else
-	{
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	}
-
-	// Create the texture sampler state.
-	device->CreateSamplerState(&samplerDesc, &m_sampleState);
-
-
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);
 
