@@ -38,6 +38,10 @@ public:
 	void Shutdown();
 	bool Frame();
 
+	void MoveCam(int);
+	void ChageColor(int);
+	void TurnLight(int);
+
 private:
 	bool Render(float);
 
@@ -45,9 +49,21 @@ private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
+	ModelClass* m_Grass;
 
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
+
+	float m_lightA;
+	float m_lightD;
+	float m_lightS;
+
+	float m_colorR;
+	float m_colorG;
+	float m_colorB;
+
+	float m_camX;
+	float m_camZ;
 };
 
 #endif

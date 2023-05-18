@@ -29,6 +29,7 @@ struct VertexInputType
 {
     float4 position : POSITION;
     float2 tex : TEXCOORD0;
+    float3 instancePosition : TEXCOORD1;
 };
 
 struct PixelInputType
@@ -48,6 +49,10 @@ PixelInputType TextureVertexShader(VertexInputType input)
 
 	// Change the position vector to be 4 units for proper matrix calculations.
     input.position.w = 1.0f;
+
+    input.position.x += input.instancePosition.x;
+    input.position.y += input.instancePosition.y;
+    input.position.z += input.instancePosition.z;
 
 	// Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(input.position, worldMatrix);

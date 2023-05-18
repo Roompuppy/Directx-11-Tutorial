@@ -7,7 +7,7 @@
 ModelClass::ModelClass()
 {
 	m_vertexBuffer = 0;
-	m_indexBuffer = 0;
+	m_instanceBuffer = 0;
 	m_Texture = 0;
 	m_model = 0;
 
@@ -79,10 +79,14 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
-
-int ModelClass::GetIndexCount()
+int ModelClass::GetVertexCount()
 {
-	return m_indexCount;
+	return m_vertexCount;
+}
+
+int ModelClass::GetInstanceCount()
+{
+	return m_instanceCount;
 }
 
 
@@ -95,9 +99,9 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	VertexType* vertices;
-	unsigned long* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-    D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	InstanceType* instances;
+	D3D11_BUFFER_DESC vertexBufferDesc, instanceBufferDesc;
+    D3D11_SUBRESOURCE_DATA vertexData, instanceData;
 	HRESULT result;
 	int i;
 
@@ -108,21 +112,12 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
-	// Create the index array.
-	indices = new unsigned long[m_indexCount];
-	if(!indices)
-	{
-		return false;
-	}
-
 	// Load the vertex array and index array with data.
 	for (i = 0; i < m_vertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
 		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
 		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
-
-		indices[i] = i;
 	}
 
 	// Set up the description of the static vertex buffer.
@@ -145,21 +140,43 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
+	//////////////////////////////////////////////////////
+
+	m_instanceCount = 10;
+
+	// Create the index array.
+	instances = new InstanceType[m_instanceCount];
+	if (!instances)
+	{
+		return false;
+	}
+
+	instances[0].position = XMFLOAT3(0.0f, 8.0f, 0.0f);
+	instances[1].position = XMFLOAT3(-5.0f, 3.0f, 0.0f);
+	instances[2].position = XMFLOAT3(5.0f, 3.0f, 0.0f);
+	instances[3].position = XMFLOAT3(10.0f, -3.0f, 0.0f);
+	instances[4].position = XMFLOAT3(0.0f, -3.0f, 0.0f);
+	instances[5].position = XMFLOAT3(-10.0f, -3.0f, 0.0f);
+	instances[6].position = XMFLOAT3(-14.0f, -8.0f, 0.0f);
+	instances[7].position = XMFLOAT3(-5.0f, -8.0f, 0.0f);
+	instances[8].position = XMFLOAT3(5.0f, -8.0f, 0.0f);
+	instances[9].position = XMFLOAT3(14.0f, -8.0f, 0.0f);
+
 	// Set up the description of the static index buffer.
-    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
-    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.CPUAccessFlags = 0;
-    indexBufferDesc.MiscFlags = 0;
-	indexBufferDesc.StructureByteStride = 0;
+    instanceBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    instanceBufferDesc.ByteWidth = sizeof(InstanceType) * m_instanceCount;
+    instanceBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    instanceBufferDesc.CPUAccessFlags = 0;
+    instanceBufferDesc.MiscFlags = 0;
+	instanceBufferDesc.StructureByteStride = 0;
 
 	// Give the subresource structure a pointer to the index data.
-    indexData.pSysMem = indices;
-	indexData.SysMemPitch = 0;
-	indexData.SysMemSlicePitch = 0;
+    instanceData.pSysMem = instances;
+	instanceData.SysMemPitch = 0;
+	instanceData.SysMemSlicePitch = 0;
 
 	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	result = device->CreateBuffer(&instanceBufferDesc, &instanceData, &m_instanceBuffer);
 	if(FAILED(result))
 	{
 		return false;
@@ -169,8 +186,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	delete [] vertices;
 	vertices = 0;
 
-	delete [] indices;
-	indices = 0;
+	delete [] instances;
+	instances = 0;
 
 	return true;
 }
@@ -179,10 +196,10 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 void ModelClass::ShutdownBuffers()
 {
 	// Release the index buffer.
-	if(m_indexBuffer)
+	if(m_instanceBuffer)
 	{
-		m_indexBuffer->Release();
-		m_indexBuffer = 0;
+		m_instanceBuffer->Release();
+		m_instanceBuffer = 0;
 	}
 
 	// Release the vertex buffer.
@@ -198,19 +215,24 @@ void ModelClass::ShutdownBuffers()
 
 void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
-	unsigned int stride;
-	unsigned int offset;
+	unsigned int strides[2];
+	unsigned int offsets[2];
+	ID3D11Buffer* bufferPointers[2];
 
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(VertexType); 
-	offset = 0;
-    
-	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	strides[0] = sizeof(VertexType);
+	strides[1] = sizeof(InstanceType);
 
-    // Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	offsets[0] = 0;
+	offsets[1] = 0;
+    
+	bufferPointers[0] = m_vertexBuffer;
+	bufferPointers[1] = m_instanceBuffer;
+
+	// Set the vertex buffer to active in the input assembler so it can be rendered.
+	deviceContext->IASetVertexBuffers(0, 2, bufferPointers, strides, offsets);
 
     // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -457,9 +479,6 @@ bool ModelClass::LoadDataStructures(const WCHAR* filename, int vertexCount, int 
 	//fout << endl;
 
 	m_vertexCount = faceCount * 3;
-
-	// Set the number of indices to be the same as the vertex count.
-	m_indexCount = m_vertexCount;
 
 	// Create the model using the vertex count that was read in.
 	m_model = new ModelType[m_vertexCount];

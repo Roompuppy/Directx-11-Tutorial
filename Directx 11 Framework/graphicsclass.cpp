@@ -9,8 +9,17 @@ GraphicsClass::GraphicsClass()
 	m_D3D = 0;
 	m_Camera = 0;
 	m_Model = 0;
+	m_Grass = 0;
 	m_LightShader = 0;
 	m_Light = 0;
+	m_camX = 0.0f;
+	m_camZ = -50.0f;
+	m_colorR = 1.0f;
+	m_colorG = 1.0f;
+	m_colorB = 1.0f;
+	m_lightA = 1.0f;
+	m_lightD = 1.0f;
+	m_lightS = 1.0f;
 }
 
 
@@ -52,8 +61,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);	// for cube
-//	m_Camera->SetPosition(0.0f, 0.5f, -3.0f);	// for chair
+	m_Camera->SetPosition(0.0f, 0.0f, -50.0f);
 		
 	// Create the model object.
 	m_Model = new ModelClass;
@@ -63,13 +71,25 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the model object.
-	result = m_Model->Initialize(m_D3D->GetDevice(), L"./data/cube.obj", L"./data/seafloor.dds");
-//	result = m_Model->Initialize(m_D3D->GetDevice(), L"./data/chair.obj", L"./data/chair_d.dds");
+	result = m_Model->Initialize(m_D3D->GetDevice(), L"./data/aircraft.obj", L"./data/aircraft_d.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
+
+	m_Grass = new ModelClass;
+	if (!m_Grass)
+	{
+		return false;
+	}
+	result = m_Grass->Initialize(m_D3D->GetDevice(), L"./data/aircraft.obj", L"./data/aircraft_d.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		return false;
+	}
+
 
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
@@ -94,11 +114,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the light object.
-	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
-//	m_Light->SetAmbientColor(0.0f, 0.0f, 0.0f, 1.0f);
+	m_Light->SetAmbientColor(0.1f, 0.1f, 0.1f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-//	m_Light->SetDiffuseColor(0.0f, 0.0f, 0.0f, 1.0f);
-//	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 	m_Light->SetDirection(1.0f, 0.0f, 0.0f);
 
 	return true;
@@ -156,7 +173,7 @@ bool GraphicsClass::Frame()
 
 
 	// Update the rotation variable each frame.
-	rotation += XM_PI * 0.005f;
+	rotation += XM_PI * 0.003f;
 	if (rotation > 360.0f)
 	{
 		rotation -= 360.0f;
@@ -176,7 +193,14 @@ bool GraphicsClass::Render(float rotation)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
-	
+
+	m_Camera->SetRotation(0.0f, 0.0f, 0.0f);
+	m_Camera->SetPosition(m_camX, 0.0f, m_camZ);
+
+	m_Light->SetAmbientColor(m_colorR*m_lightA*0.1f, m_colorG* m_lightA * 0.1f, m_colorB* m_lightA * 0.1f, 1.0f);
+	m_Light->SetDiffuseColor(m_colorR*m_lightD, m_colorG * m_lightD, m_colorB * m_lightD, 1.0f);
+	m_Light->SetDirection(1.0f, 0.0f, 0.0f);
+
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -195,7 +219,7 @@ bool GraphicsClass::Render(float rotation)
 	m_Model->Render(m_D3D->GetDeviceContext());
 
 	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetVertexCount(), m_Model->GetInstanceCount(), worldMatrix, viewMatrix, projectionMatrix,
 		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
 	
 	if(!result)
@@ -207,4 +231,90 @@ bool GraphicsClass::Render(float rotation)
 	m_D3D->EndScene();
 
 	return true;
+}
+
+void GraphicsClass::MoveCam(int type)
+{
+	float speed = 0.1f;
+
+	switch (type)
+	{
+	case 0: // w
+		m_camZ += speed;
+		break;
+	case 1: // a
+		m_camX -= speed;
+		break;
+	case 2: // s
+		m_camZ -= speed;
+		break;
+	case 3: // d
+		m_camX += speed;
+		break;
+	default:
+		break;
+	}
+}
+
+void GraphicsClass::ChageColor(int type)
+{
+	switch (type)
+	{
+	case 0:
+		m_colorR = 1.0f;
+		m_colorG = 0.0f;
+		m_colorB = 0.0f;
+		break;
+	case 1:
+		m_colorR = 0.0f;
+		m_colorG = 1.0f;
+		m_colorB = 0.0f;
+		break;
+	case 2:
+		m_colorR = 0.0f;
+		m_colorG = 0.0f;
+		m_colorB = 1.0f;
+		break;
+	default:
+		break;
+	}
+}
+
+void GraphicsClass::TurnLight(int type)
+{
+	switch (type)
+	{
+	case 0:
+		if (m_lightA == 1.0f)
+		{
+			m_lightA = 0.0f;
+		}
+		else
+		{
+			m_lightA = 1.0f;
+		}
+		break;
+	case 1:
+		if (m_lightD == 1.0f)
+		{
+			m_lightD = 0.0f;
+		}
+		else
+		{
+			m_lightD = 1.0f;
+		}
+		break;
+	case 2:
+		if (m_lightS == 1.0f)
+		{
+			m_lightS = 0.0f;
+		}
+		else
+		{
+			m_lightS = 1.0f;
+		}
+		break;
+	default:
+		break;
+	}
 }
