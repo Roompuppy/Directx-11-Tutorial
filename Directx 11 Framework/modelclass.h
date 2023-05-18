@@ -63,6 +63,8 @@ public:
 	bool LoadModel(const WCHAR*);
 	void ReleaseModel();
 
+	bool ReadFileCounts(const WCHAR*);
+	bool LoadDataStructures(const WCHAR*, int, int, int, int);
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -71,9 +73,6 @@ private:
 
 	bool LoadTexture(ID3D11Device*, const WCHAR*);
 	void ReleaseTexture();
-
-	bool ReadFileCounts(const WCHAR*);
-	bool LoadDataStructures(const WCHAR*, int, int, int, int);
 
 private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;

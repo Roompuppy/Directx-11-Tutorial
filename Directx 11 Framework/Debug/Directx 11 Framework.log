@@ -1,12 +1,7 @@
-﻿  bitmapclass.cpp
-  cameraclass.cpp
+﻿  cameraclass.cpp
   colorshaderclass.cpp
-  cpuclass.cpp
   d3dclass.cpp
   DDSTextureLoader.cpp
-  fontclass.cpp
-  fontshaderclass.cpp
-  fpsclass.cpp
   graphicsclass.cpp
   inputclass.cpp
   lightclass.cpp
@@ -14,9 +9,7 @@
   main.cpp
   modelclass.cpp
   systemclass.cpp
-  textclass.cpp
   textureclass.cpp
   textureshaderclass.cpp
-  timerclass.cpp
   코드를 생성하고 있습니다...
   Directx 11 Framework.vcxproj -> C:\Users\user\Desktop\Git\Directx-11-Tutorial\Debug\Directx 11 Framework.exe
