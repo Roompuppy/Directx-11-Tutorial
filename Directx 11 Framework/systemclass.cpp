@@ -2,7 +2,7 @@
 // Filename: systemclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "systemclass.h"
-#include <time.h>
+
 
 SystemClass::SystemClass()
 {
@@ -129,53 +129,8 @@ void SystemClass::Run()
 
 bool SystemClass::Frame()
 {
-	clock_t time = clock();
-	static clock_t end;
 	bool result;
 
-	if (m_Input->IsKeyDown(0x57))  // w
-	{
-		m_Graphics->MoveCam(0);
-	}
-	if (m_Input->IsKeyDown(0x41))  // a
-	{
-		m_Graphics->MoveCam(1);
-	}
-	if (m_Input->IsKeyDown(0x53))  // s
-	{
-		m_Graphics->MoveCam(2);
-	}
-	if (m_Input->IsKeyDown(0x44))  // d
-	{
-		m_Graphics->MoveCam(3);
-	}
-
-	if (m_Input->IsKeyDown(0x52))  // r
-	{
-		m_Graphics->ChageColor(0);
-	}
-	if (m_Input->IsKeyDown(0x47))  // g
-	{
-		m_Graphics->ChageColor(1);
-	}
-	if (m_Input->IsKeyDown(0x42))  // b
-	{
-		m_Graphics->ChageColor(2);
-	}
-
-
-	if (m_Input->IsKeyDown(VK_NUMPAD6))
-	{
-		m_Graphics->TurnLight(0);
-	}
-	if (m_Input->IsKeyDown(VK_NUMPAD7))
-	{
-		m_Graphics->TurnLight(1);
-	}
-	if (m_Input->IsKeyDown(VK_NUMPAD8))
-	{
-		m_Graphics->TurnLight(2);
-	}
 
 	// Check if the user pressed escape and wants to exit the application.
 	if(m_Input->IsKeyDown(VK_ESCAPE))

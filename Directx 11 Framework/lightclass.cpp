@@ -18,11 +18,6 @@ LightClass::~LightClass()
 {
 }
 
-void LightClass::SetAmbientColor(float red, float green, float blue, float alpha)
-{
-	m_ambientColor = XMFLOAT4(red, green, blue, alpha);
-	return;
-}
 
 void LightClass::SetDiffuseColor(float red, float green, float blue, float alpha)
 {
@@ -37,9 +32,10 @@ void LightClass::SetDirection(float x, float y, float z)
 	return;
 }
 
-XMFLOAT4 LightClass::GetAmbientColor()
+void LightClass::SetPosition(float x, float y, float z)
 {
-	return m_ambientColor;
+	m_position = XMFLOAT4(x, y, z, 1.0f);
+	return;
 }
 
 XMFLOAT4 LightClass::GetDiffuseColor()
@@ -51,4 +47,10 @@ XMFLOAT4 LightClass::GetDiffuseColor()
 XMFLOAT3 LightClass::GetDirection()
 {
 	return m_direction;
+}
+
+
+XMFLOAT4 LightClass::GetPosition()
+{
+	return m_position;
 }
